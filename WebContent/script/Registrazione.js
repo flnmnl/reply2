@@ -46,7 +46,7 @@ function checkPassword(inputtxt) {
 }
 
 
-function validate(obj) {	
+function validate(obj) {	 
 	var valid = true;	
 	
 	var nome = document.getElementsByName("nome")[0];

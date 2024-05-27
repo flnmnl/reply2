@@ -18,6 +18,18 @@ import it.unisa.model.ProdottoDao;
 @WebServlet("/catalogo")
 public class CatalogoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	// Se la stringa s contiene caratteri proibiti ritorna "Invalid", altrimenti la stringa passata in input
+	private String sanitize(String s) { 
+		String forbidden = "<>/%$;\"\'";
+		for (char c: forbidden.toCharArray()) {
+			if (s.indexOf(c) != -1) {
+				return "Invalid";
+			}
+		}
+		
+		return s;
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -31,16 +43,16 @@ public class CatalogoServlet extends HttpServlet {
 		try {
 			if(action!=null) {
 				if(action.equalsIgnoreCase("add")) {
-					bean.setNome(request.getParameter("nome"));
-					bean.setDescrizione(request.getParameter("descrizione"));
-					bean.setIva(request.getParameter("iva"));
+					bean.setNome(sanitize(request.getParameter("nome")));
+					bean.setDescrizione(sanitize(request.getParameter("descrizione")));
+					bean.setIva(sanitize(request.getParameter("iva")));
 					bean.setPrezzo(Double.parseDouble(request.getParameter("prezzo")));
 					bean.setQuantità(Integer.parseInt(request.getParameter("quantità")));
-					bean.setPiattaforma(request.getParameter("piattaforma"));
-					bean.setGenere(request.getParameter("genere"));
-					bean.setImmagine(request.getParameter("img"));
-					bean.setDataUscita(request.getParameter("dataUscita"));
-					bean.setDescrizioneDettagliata(request.getParameter("descDett"));
+					bean.setPiattaforma(sanitize(request.getParameter("piattaforma")));
+					bean.setGenere(sanitize(request.getParameter("genere")));
+					bean.setImmagine(sanitize(request.getParameter("img")));
+					bean.setDataUscita(sanitize(request.getParameter("dataUscita")));
+					bean.setDescrizioneDettagliata(sanitize(request.getParameter("descDett")));
 					bean.setInVendita(true);
 					prodDao.doSave(bean);
 				}
